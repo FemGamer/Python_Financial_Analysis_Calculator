@@ -42,7 +42,6 @@ def is_page_relevant(text):
             return keyword
         
         
-###in general i think this code could be more simplified, i am finding out but i have so little experience in dealing pdf file with python     
 
 def extract_data(file_path):
     financial_data = {}
@@ -60,42 +59,42 @@ def extract_data(file_path):
                 print("")
 
             # Extract net profit
-            net_profit_match= re.search(r'Profit for the year\s*([-,\d.]+)', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'Loss for the year\s*([-,\d.]+([-+]?\d[\d,]*))', text, re.IGNORECASE)
-            if net_profit_match:
-                print("page: " + str(page.page_number) + "pattern: " + net_profit_match.group(1) + "     value: " + net_profit_match.group(1))
-                value = net_profit_match.group(1).replace(",", "").replace(".", "")
+            Net_Profit_Value= re.search(r'Profit for the year\s*([-,\d.]+)', text, re.IGNORECASE)
+            if not Net_Profit_Value:
+                Net_Profit_Value= re.search(r'Loss for the year\s*([-,\d.]+([-+]?\d[\d,]*))', text, re.IGNORECASE)
+            if Net_Profit_Value:
+                print("page: " + str(page.page_number) + "pattern: " + Net_Profit_Value.group(1) + "     value: " + Net_Profit_Value.group(1))
+                value = Net_Profit_Value.group(1).replace(",", "").replace(".", "")
                 try:
                     financial_data["Net profit"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
             # Extract operating income
-            operating_income_match = re.search(r'Total net income\s*([\d,]+)', text, re.IGNORECASE)
-            if operating_income_match:
-                print("page: " + str(page.page_number) + "pattern: " + operating_income_match.group(1) + "     value: " + operating_income_match.group(1))
-                value = operating_income_match.group(1).replace(",", "")
+            Operating_Income_Value = re.search(r'Total net income\s*([\d,]+)', text, re.IGNORECASE)
+            if Operating_Income_Value:
+                print("page: " + str(page.page_number) + "pattern: " + Operating_Income_Value.group(1) + "     value: " + Operating_Income_Value.group(1))
+                value = Operating_Income_Value.group(1).replace(",", "")
                 try:
                     financial_data["Operating income"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
             # Extract total liabilities
-            total_liabilities_match = re.search(r'(?:Total liabilities|Total Liabilities|TOTAL)\s*([\d,]+)', text, re.IGNORECASE)
-            if total_liabilities_match:
-                print("page: " + str(page.page_number) + "pattern: " + total_liabilities_match.group(1) + "     value: " + total_liabilities_match.group(1))
-                value = total_liabilities_match.group(1).replace(",", "").replace(".", "").replace("-", "")
+            Liabilities_Value = re.search(r'(?:Total liabilities|Total Liabilities|TOTAL)\s*([\d,]+)', text, re.IGNORECASE)
+            if Liabilities_Value:
+                print("page: " + str(page.page_number) + "pattern: " + Liabilities_Value.group(1) + "     value: " + Liabilities_Value.group(1))
+                value = Liabilities_Value.group(1).replace(",", "").replace(".", "").replace("-", "")
                 try:
                     financial_data["Total liabilities"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
             # Extract total assets
-            total_assets_match = re.search(r'(?:Total assets|TOTAL ASSETS|TOTAL)\s*([\d,.-]+)', text)
-            if total_assets_match:
-                print("page: " + str(page.page_number) + "pattern: " + total_assets_match.group(1) + "     value: " + total_assets_match.group(1))
-                value = total_assets_match.group(1).replace(",", "").replace(".", "").replace("-", "")
+            Assets_Value = re.search(r'(?:Total assets|TOTAL ASSETS|TOTAL)\s*([\d,.-]+)', text)
+            if Assets_Value:
+                print("page: " + str(page.page_number) + "pattern: " + Assets_Value.group(1) + "     value: " + Assets_Value.group(1))
+                value = Assets_Value.group(1).replace(",", "").replace(".", "").replace("-", "")
                 try:
                     financial_data["Total assets"] = float(value)
                 except ValueError:

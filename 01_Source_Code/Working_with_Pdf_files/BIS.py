@@ -42,7 +42,6 @@ def is_page_relevant(text):
             return keyword
         
         
-###in general i think this code could be more simplified, i am finding out but i have so little experience in dealing pdf file with python     
 
 def extract_data(file_path):
     financial_data = {}
@@ -59,30 +58,30 @@ def extract_data(file_path):
                 print("")
                 
 
-            net_profit_match = re.search(r'Net income\s*(?:\(loss\))?\s*\(?([-,\d.]+)\)?', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match = re.search(r'Net profit\s*\(loss\)\s*\(([-,\d.]+)\)', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'Profit after tax\s*([-,\d.]+)|Profit for the year attributable to shareholder\s*([-,\d.]+)', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'PROFIT FOR THE YEAR\s*([-,\d.]+)', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'Profit for the year\s*([-,\d.]+)', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'(Net consolidated income after tax\s*[.:]*\s*\$?\s*([\d,]+))', text, re.IGNORECASE)
-            if not net_profit_match:
-                net_profit_match= re.search(r'Net profit\s*([-,\d.]+)', text, re.IGNORECASE)
-            if net_profit_match:
-                value = net_profit_match.group(1).replace(",", "")
+            net_profit = re.search(r'Net income\s*(?:\(loss\))?\s*\(?([-,\d.]+)\)?', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit = re.search(r'Net profit\s*\(loss\)\s*\(([-,\d.]+)\)', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit= re.search(r'Profit after tax\s*([-,\d.]+)|Profit for the year attributable to shareholder\s*([-,\d.]+)', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit= re.search(r'PROFIT FOR THE YEAR\s*([-,\d.]+)', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit= re.search(r'Profit for the year\s*([-,\d.]+)', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit= re.search(r'(Net consolidated income after tax\s*[.:]*\s*\$?\s*([\d,]+))', text, re.IGNORECASE)
+            if not net_profit:
+                net_profit= re.search(r'Net profit\s*([-,\d.]+)', text, re.IGNORECASE)
+            if net_profit:
+                value = net_profit.group(1).replace(",", "")
                 try:
                     financial_data["Net profit"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
               
             
-            total_liabilities_match = re.search(r'Total\s*liabilities\s*([\d,]+)', text, re.IGNORECASE)
-            if total_liabilities_match:
-                value = total_liabilities_match.group(1) or total_liabilities_match.group(2)
+            total_liabilities = re.search(r'Total\s*liabilities\s*([\d,]+)', text, re.IGNORECASE)
+            if total_liabilities:
+                value = total_liabilities.group(1) or total_liabilities.group(2)
                 value = value.replace(",", "")
                 try:
                     financial_data["Total liabilities"] = float(value)
@@ -112,17 +111,17 @@ def extract_data(file_path):
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
-            operating_income_match = re.search(r'(?:Operating income|OPERATING INCOME|Net operating income|Total revenue|Total income|Total revenues)\s*([\d,.-]+)', text)
-            if operating_income_match:
-                value = operating_income_match.group(1).replace(",", "").replace(".", "").replace("-", "")
+            operating_income = re.search(r'(?:Operating income|OPERATING INCOME|Net operating income|Total revenue|Total income|Total revenues)\s*([\d,.-]+)', text)
+            if operating_income:
+                value = operating_income.group(1).replace(",", "").replace(".", "").replace("-", "")
                 try:
                     financial_data["Operating income"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
-            total_assets_match = re.search(r'Total assets\s*(?:\(fair value\))?\s*([\d,]+)', text, re.IGNORECASE)
-            if total_assets_match:
-                value = total_assets_match.group(1).replace(",", "")
+            total_assets = re.search(r'Total assets\s*(?:\(fair value\))?\s*([\d,]+)', text, re.IGNORECASE)
+            if total_assets:
+                value = total_assets.group(1).replace(",", "")
                 try:
                     financial_data["Total assets"] = float(value)
                 except ValueError:

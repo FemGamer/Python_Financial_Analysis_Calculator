@@ -41,7 +41,6 @@ def is_page_relevant(text):
             return keyword
         
         
-###in general i think this code could be more simplified, i am finding out but i have so little experience in dealing pdf file with python     
 
 def extract_data(file_path):
     financial_data = {}
@@ -57,9 +56,9 @@ def extract_data(file_path):
                     continue
                 print("")
             
-            net_profit_match= re.search(r'Net consolidated income after tax\s*([\d,.-]+)', text, re.IGNORECASE)
-            if net_profit_match:
-                value = net_profit_match.group(1).replace(",", "")
+            net_profit= re.search(r'Net consolidated income after tax\s*([\d,.-]+)', text, re.IGNORECASE)
+            if net_profit:
+                value = net_profit.group(1).replace(",", "")
                 try:
                     financial_data["Net profit"] = float(value)
                 except ValueError:
@@ -85,17 +84,17 @@ def extract_data(file_path):
             financial_data["Total income"] = operating_income
 
 
-            total_equity_liabilities_match = re.search(r'TOTAL SHAREHOLDERS(?:\’)? EQUITY AND LIABILITIES\s*([\d,]+)', text, re.IGNORECASE)
-            if total_equity_liabilities_match:
-                value = total_equity_liabilities_match.group(1).replace(",", "")
+            Liabilities_Value = re.search(r'TOTAL SHAREHOLDERS(?:\’)? EQUITY AND LIABILITIES\s*([\d,]+)', text, re.IGNORECASE)
+            if Liabilities_Value:
+                value = Liabilities_Value.group(1).replace(",", "")
                 try:
                     financial_data["Total shareholders' equity and liabilities"] = float(value)
                 except ValueError:
                     print("Error converting '{}' to float. Skipping...".format(value))
 
-            total_assets_match = re.search(r'Total assets\s*([\d,]+)', text, re.IGNORECASE)
-            if total_assets_match:
-                value = total_assets_match.group(1).replace(",", "")
+            Assets_Value = re.search(r'Total assets\s*([\d,]+)', text, re.IGNORECASE)
+            if Assets_Value:
+                value = Assets_Value.group(1).replace(",", "")
                 try:
                     financial_data["Total assets"] = float(value)
                 except ValueError:
